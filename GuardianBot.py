@@ -110,20 +110,25 @@ async def monitor(client, message: Message):
                 pass
 
     # 🔗 Bio link detection
-    try:
-        profile = await client.get_chat(user.id)
-        if has_link(profile.bio or ""):
-            until = datetime.utcnow() + timedelta(minutes=30)
-            await message.chat.restrict_member(
-                user.id,
-                ChatPermissions(),
-                until_date=until
-            )
-            await message.reply(
-                "🔇 You’ve been muted for 30 minutes. Please remove your bio link."
-            )
-    except Exception as e:
-        print(f"Bio check error: {e}")
+try:
+    profile = await client.get_chat(user.id)
+    bio = profile.bio or ""
+
+    print(f"Checking bio of {user.id}: {bio}")  # Debug print
+
+    if has_link(bio):
+        until = datetime.utcnow() + timedelta(minutes=30)
+        await message.chat.restrict_member(
+            user.id,
+            ChatPermissions(),
+            until_date=until
+        )
+        await message.reply(
+            "🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link."
+        )
+        print(f"Muted {user.id} for bio link")
+except Exception as e:
+    print(f"[BIO MUTE ERROR] {e}")
 
 # ========== AUTO DELETE FOR PUNISHED ==========
 @bot.on_message(filters.group)
