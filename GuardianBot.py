@@ -51,19 +51,12 @@ BAD_WORDS = [
 @bot.on_message(filters.command("start"))
 async def start(client, message):
     await message.reply_text(
-        f"👋 Hello {message.from_user.first_name}!
-
-"
-        "🤖 GuardianBot is active.
-"
-        "✔️ Bio link protection
-"
-        "✔️ Abuse filter
-"
-        "✔️ Global punish system
-
-"
-        "Use /punish and /unpunish by replying to messages."
+    f"👋 Hello {message.from_user.first_name}!\n\n"
+    "🤖 GuardianBot is active.\n"
+    "✔️ Bio link protection\n"
+    "✔️ Abuse filter\n"
+    "✔️ Global punish system\n\n"
+    "Use /punish and /unpunish by replying to messages."
     )
 
 @bot.on_message(filters.command("punish") & filters.reply & filters.group)
