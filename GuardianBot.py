@@ -13,7 +13,6 @@ OWNER_ID = 7561824165
 FRIEND_ID = 7985620608
 ALLOWED_USERS = [OWNER_ID, FRIEND_ID]
 
-# ========== START BOT ==========
 bot = Client("GuardianBot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 # ========== DB SETUP ==========
@@ -51,12 +50,12 @@ BAD_WORDS = [
 @bot.on_message(filters.command("start"))
 async def start(client, message):
     await message.reply_text(
-    f"👋 Hello {message.from_user.first_name}!\n\n"
-    "🤖 GuardianBot is active.\n"
-    "✔️ Bio link protection\n"
-    "✔️ Abuse filter\n"
-    "✔️ Global punish system\n\n"
-    "Use /punish and /unpunish by replying to messages."
+        f"👋 Hello {message.from_user.first_name}!\n\n"
+        "🤖 GuardianBot is active.\n"
+        "✔️ Bio link protection\n"
+        "✔️ Abuse filter\n"
+        "✔️ Global punish system\n\n"
+        "Use /punish and /unpunish by replying to messages."
     )
 
 @bot.on_message(filters.command("punish") & filters.reply & filters.group)
@@ -110,25 +109,19 @@ async def monitor(client, message: Message):
                 pass
 
     # 🔗 Bio link detection
-try:
-    profile = await client.get_chat(user.id)
-    bio = profile.bio or ""
-
-    print(f"Checking bio of {user.id}: {bio}")  # Debug print
-
-    if has_link(bio):
-        until = datetime.utcnow() + timedelta(minutes=30)
-        await message.chat.restrict_member(
-            user.id,
-            ChatPermissions(),
-            until_date=until
-        )
-        await message.reply(
-            "🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link."
-        )
-        print(f"Muted {user.id} for bio link")
-except Exception as e:
-    print(f"[BIO MUTE ERROR] {e}")
+    try:
+        profile = await client.get_chat(user.id)
+        bio = profile.bio or ""
+        if has_link(bio):
+            until = datetime.utcnow() + timedelta(minutes=30)
+            await message.chat.restrict_member(
+                user.id,
+                ChatPermissions(),
+                until_date=until
+            )
+            await message.reply("🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link.")
+    except Exception as e:
+        print(f"[BIO MUTE ERROR] {e}")
 
 # ========== AUTO DELETE FOR PUNISHED ==========
 @bot.on_message(filters.group)
