@@ -97,31 +97,27 @@ async def monitor(client, message: Message):
         except:
             pass
 
-    # 💣 Abuse detection
-    text = message.text.lower()
-    for word in BAD_WORDS:
-        pattern = rf"\b{re.escape(word)}\b"
-        if re.search(pattern, text):
-            try:
-                await message.delete()
-                return
-            except:
-                pass
+    # 🔗 Bio link detection (Safe version)
+try:
+    profile = await client.get_chat(user.id)
+    bio = profile.bio or ""
 
-    # 🔗 Bio link detection
-    try:
-        profile = await client.get_chat(user.id)
-        bio = profile.bio or ""
-        if has_link(bio):
+    if has_link(bio):
+        # Ensure it's a supergroup and bot is admin
+        member = await client.get_chat_member(message.chat.id, "me")
+        if member.can_restrict_members:
             until = datetime.utcnow() + timedelta(minutes=30)
-            await message.chat.restrict_member(
+            await client.restrict_chat_member(
+                message.chat.id,
                 user.id,
                 ChatPermissions(),
                 until_date=until
             )
-            await message.reply("🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link.")
-    except Exception as e:
-        print(f"[BIO MUTE ERROR] {e}")
+            await message.reply(
+                "🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link."
+            )
+except Exception as e:
+    print(f"[BIO MUTE ERROR] {e}")
 
 # ========== AUTO DELETE FOR PUNISHED ==========
 @bot.on_message(filters.group)
