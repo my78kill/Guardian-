@@ -108,24 +108,30 @@ async def monitor(client, message: Message):
             except:
                 pass
 
-    # 🔗 Bio link detection
+    # 🔗 Bio link detection (with rate-limit handling)
     try:
-        profile = await client.get_chat(user.id)
-        bio = profile.bio or ""
+        if not hasattr(bot, "bio_cache"):
+            bot.bio_cache = {}
 
-        if has_link(bio):
-            member = await client.get_chat_member(message.chat.id, "me")
-            if member.can_restrict_members:
-                until = datetime.utcnow() + timedelta(minutes=30)
-                await client.restrict_chat_member(
-                    message.chat.id,
-                    user.id,
-                    ChatPermissions(),
-                    until_date=until
-                )
-                await message.reply(
-                    "🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link."
-                )
+        last_checked = bot.bio_cache.get(user.id, datetime.min)
+        if datetime.utcnow() - last_checked > timedelta(hours=1):
+            profile = await client.get_chat(user.id)
+            bio = profile.bio or ""
+            bot.bio_cache[user.id] = datetime.utcnow()
+
+            if has_link(bio):
+                member = await client.get_chat_member(message.chat.id, "me")
+                if member.can_restrict_members:
+                    until = datetime.utcnow() + timedelta(minutes=30)
+                    await client.restrict_chat_member(
+                        message.chat.id,
+                        user.id,
+                        ChatPermissions(),
+                        until_date=until
+                    )
+                    await message.reply(
+                        "🔇 You’ve been muted for 30 minutes.\nPlease remove your bio link."
+                    )
     except Exception as e:
         print(f"[BIO MUTE ERROR] {e}")
 
@@ -141,7 +147,7 @@ async def auto_delete_punished(client, message: Message):
 
 # ========== FLASK PORT BIND FOR RENDER ==========
 import threading
-import main
+import main  # make sure you have a file `main.py` with a Flask app named `app`
 threading.Thread(target=main.app.run, kwargs={"host": "0.0.0.0", "port": 10000}).start()
 
 print("✅ GuardianBot is running...")
