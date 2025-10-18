@@ -6,11 +6,11 @@ from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions, Message
 
 # ========== CONFIG ==========
-API_ID = 23998977
-API_HASH = "861f317b92b524cd2412cf97b6e4e32f"
-BOT_TOKEN = "7476298269:AAFn6FHoaUUwpi1BA_AKeOKhhJwDSNV1YrM"
-OWNER_ID = 7561824165
-FRIEND_ID = 7985620608
+API_ID = 29765104
+API_HASH = "1c0348c74607923c87b7cab20bc77af0"
+BOT_TOKEN = "8413126697:AAGtnfTM_rEiPOyOWGTVK29m8jvad5LE4BM"
+OWNER_ID = 8316921366
+FRIEND_ID = 8452694781
 ALLOWED_USERS = [OWNER_ID, FRIEND_ID]
 
 bot = Client("GuardianBot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
