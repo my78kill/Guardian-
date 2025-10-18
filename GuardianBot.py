@@ -52,7 +52,6 @@ async def start(client, message):
     await message.reply_text(
         f"👋 Hello {message.from_user.first_name}!\n\n"
         "🤖 GuardianBot is active.\n"
-        "✔️ Bio link protection\n"
         "✔️ Abuse filter\n"
         "✔️ Global punish system\n\n"
         "Use /punish and /unpunish by replying to messages."
