@@ -6,10 +6,10 @@ from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions, Message
 
 # ========== CONFIG ==========
-API_ID = 29765104
-API_HASH = "1c0348c74607923c87b7cab20bc77af0"
-BOT_TOKEN = "8413126697:AAGtnfTM_rEiPOyOWGTVK29m8jvad5LE4BM"
-OWNER_ID = 8316921366
+API_ID = 23998977
+API_HASH = "861f317b92b524cd2412cf97b6e4e32f"
+BOT_TOKEN = "8407675014:AAHsLYYOh4FgV0lQ5YpK2MaPUZ6mC-Pq3LM"
+OWNER_ID = 8573319976
 FRIEND_ID = 7658033495
 ALLOWED_USERS = [OWNER_ID, FRIEND_ID]
 
@@ -43,7 +43,7 @@ BAD_WORDS = [
     "muth", "madharchod", "madhchod", "mchod", "madarchod", "chut", "cht", "madarjat", "jhaat", "jhant",
     "bsdk", "bhosdike", "bhosda", "bhosdha", "bhosdiwale", "l**", "lwda", "lawde", "lund", "loda", "lode",
     "gaand", "gnd", "gmd", "mwale", "ld", "ramdi", "fuddi", "randike", "chutiya", "chutiye", "c", "bkc", "bakchodi",
-    "bokachoda", "fuck", "sexy", "chodu", "hijde", "chhakka", "chakka", "chutmari"
+    "bokachoda", "fuck", "sexy", "chodu", "hijde", "chhakka", "chakka", "chutmari", "mkl", "bhootnike", "betichod"
 ]
 
 # ========== COMMAND HANDLERS ==========
@@ -53,9 +53,7 @@ async def start(client, message):
         f"👋 Hello {message.from_user.first_name}!\n\n"
         "🤖 GuardianBot is active.\n"
         "✔️ Abuse filter\n"
-        "✔️ Global punish system\n\n"
-        "Use /punish and /unpunish by replying to messages."
-    )
+        
 
 @bot.on_message(filters.command("punish") & filters.reply & filters.group)
 async def punish_cmd(client, message: Message):
